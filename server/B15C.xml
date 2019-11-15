@@ -1,0 +1,60 @@
+<suite project="B15C">
+    <case title="整机电流">
+        <index>1</index>
+        <description>测试整机电流范围</description>
+        <min>0.45</min>
+        <typical>0.47</typical>
+        <max>0.50</max>
+    </case>
+    <case title="Front Camera Voltage">
+        <index>2</index>
+        <description>测试前视摄像头电压范围</description>
+        <min>4.8</min>
+        <typical>5.0</typical>
+        <max>5.2</max>
+    </case>
+    <case title="Rear Camera Voltage">
+        <index>3</index>
+        <description>测试后视摄像头电压范围</description>
+        <min>4.8</min>
+        <typical>5.0</typical>
+        <max>5.2</max>
+    </case>
+    <case title="Left Camera Voltage">
+        <index>4</index>
+        <description>测试左视摄像头电压范围</description>
+        <min>4.8</min>
+        <typical>5.0</typical>
+        <max>5.2</max>
+    </case>
+    <case title="Right Camera Voltage">
+        <index>5</index>
+        <description>测试右视摄像头电压范围</description>
+        <min>4.8</min>
+        <typical>5.0</typical>
+        <max>5.2</max>
+    </case>
+    <case title="Front Camera Image">
+        <index>6</index>
+        <description>测试前视摄像头图像</description>
+        <typical>Red</typical>
+    </case>
+    <case title="Rear Camera Image">
+        <index>7</index>
+        <description>测试后视摄像头图像</description>
+        <typical>Green</typical>
+    </case>
+    <case title="Left Camera Image">
+        <index>8</index>
+        <description>测试左视摄像头图像</description>
+        <typical>Blue</typical>
+    </case>
+    <case title="Right Camera Image">
+        <index>9</index>
+        <description>测试右视摄像头图像</description>
+        <typical>Yellow</typical>
+        <data>01 02 03</data>
+        <data>04 05 06</data>
+        <data>07 08 09</data>
+    </case>
+</suite>
