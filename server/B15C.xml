@@ -1,60 +1,115 @@
+<!-- 
+    <suite>: 测试套件
+    @attr project: 指定项目名称
+
+    <case>: 测试用例
+    @attr title: 测试用例名称
+    @param description: 测试用例内容
+    @param category: 测试用例类别
+        00 - 前期准备，如检测板卡是否就绪
+        01 - 整机
+        02 - 前视摄像头
+        03 - 后视摄像头
+        04 - 左视摄像头
+        05 - 右视摄像头
+    @param item: 测试用例项
+        00 - xxx
+        01 - xxx
+        02 - xxx
+    @param min: 最小值
+    @param typical: 默认值
+    @param max: 最大值
+    @param data: 数据内容
+        00 - xxx
+        01 - xxx
+        02 - xxx
+ -->
 <suite project="B15C">
+    <case title="MCU控制板卡">
+        <description>测试MCU控制板卡是否就绪</description>
+        <category>00</category>
+        <item>00</item>
+        <typical>True</typical>
+        <data>00 00 00 00 00 00 00 00 00</data>
+    </case>
+    <case title="CVBS采集板卡">
+        <description>测试CVBS采集板卡是否就绪</description>
+        <category>00</category>
+        <item>01</item>
+        <typical>True</typical>
+        <data>00 00 00 00 00 00 00 00 00</data>
+    </case>
     <case title="整机电流">
-        <index>1</index>
-        <description>测试整机电流范围</description>
+        <description>测试整机电流是否处于正常范围</description>
+        <category>01</category>
+        <item>00</item>
         <min>0.45</min>
         <typical>0.47</typical>
         <max>0.50</max>
+        <data>01 00 00 00 00 00 00 00 00</data>
     </case>
-    <case title="Front Camera Voltage">
-        <index>2</index>
-        <description>测试前视摄像头电压范围</description>
+    <case title="前视摄像头电压">
+        <description>测试前视摄像头电压是否处于正常范围</description>
+        <category>02</category>
+        <item>00</item>
         <min>4.8</min>
         <typical>5.0</typical>
         <max>5.2</max>
+        <data>02 00 00 00 00 00 00 00 00 00 01</data>
     </case>
-    <case title="Rear Camera Voltage">
-        <index>3</index>
-        <description>测试后视摄像头电压范围</description>
+    <case title="后视摄像头电压">
+        <description>测试后视摄像头电压是否处于正常范围</description>
+        <category>03</category>
+        <item>00</item>
         <min>4.8</min>
         <typical>5.0</typical>
         <max>5.2</max>
+        <data>02 00 00 00 00 00 00 00 00 00 02</data>
     </case>
-    <case title="Left Camera Voltage">
-        <index>4</index>
-        <description>测试左视摄像头电压范围</description>
+    <case title="左视摄像头电压">
+        <description>测试左视摄像头电压是否处于正常范围</description>
+        <category>04</category>
+        <item>00</item>
         <min>4.8</min>
         <typical>5.0</typical>
         <max>5.2</max>
+        <data>02 00 00 00 00 00 00 00 00 00 03</data>
     </case>
-    <case title="Right Camera Voltage">
-        <index>5</index>
-        <description>测试右视摄像头电压范围</description>
+    <case title="右视摄像头电压">
+        <description>测试右视摄像头电压是否处于正常范围</description>
+        <category>05</category>
+        <item>00</item>
         <min>4.8</min>
         <typical>5.0</typical>
         <max>5.2</max>
+        <data>02 00 00 00 00 00 00 00 00 00 04</data>
     </case>
-    <case title="Front Camera Image">
-        <index>6</index>
-        <description>测试前视摄像头图像</description>
+    <case title="前视摄像头图像">
+        <description>识别前视摄像头图像颜色</description>
+        <category>02</category>
+        <item>01</item>
         <typical>Red</typical>
+        <data>03 05 a0 00 00 00 00 00 00 00 01</data>
     </case>
-    <case title="Rear Camera Image">
-        <index>7</index>
-        <description>测试后视摄像头图像</description>
+    <case title="后视摄像头图像">
+        <description>识别测试后视摄像头图像颜色</description>
+        <category>03</category>
+        <item>01</item>
         <typical>Green</typical>
+        <data>03 05 a0 00 00 00 00 00 00 00 02</data>
     </case>
-    <case title="Left Camera Image">
-        <index>8</index>
-        <description>测试左视摄像头图像</description>
+    <case title="左视摄像头图像">
+        <description>识别左视摄像头图像颜色</description>
+        <category>04</category>
+        <item>01</item>
+        <typical>White</typical>
+        <data>03 05 a0 00 00 00 00 00 00 00 03</data>
+    </case>
+    <case title="右视摄像头图像">
+        <description>识别右视摄像头图像颜色</description>
+        <category>05</category>
+        <item>01</item>
         <typical>Blue</typical>
-    </case>
-    <case title="Right Camera Image">
-        <index>9</index>
-        <description>测试右视摄像头图像</description>
-        <typical>Yellow</typical>
-        <data>01 02 03</data>
-        <data>04 05 06</data>
-        <data>07 08 09</data>
+        <data>03 05 a0 00 00 00 00 00 00 00 04</data>
     </case>
 </suite>

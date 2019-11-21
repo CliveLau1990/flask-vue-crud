@@ -15,6 +15,7 @@
 
 # Builtin libraries
 import json
+import time
 # Third-party libraries
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -35,17 +36,45 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 project = ProjectTestSuite("B15C.xml")
 
 
-@app.route('/testsuite', methods=['GET', 'POST'])
+@app.route('/testsuite', methods=['GET'])
 def get_suite():
+    response_object = dict()
+    response_object['status'] = 'success'
+    if request.method == 'GET':
+        response_object['project'] = project.get_project()
+        response_object['caseidx'] = project.get_case_idx()
+        print('caseidx/status:', project.get_case_idx(), project.get_suite()[project.get_case_idx()].get('status'))
+        response_object['suite'] = project.get_suite()
+    return jsonify(response_object)
+
+
+@app.route('/testcase/start', methods=['POST'])
+def start_case():
     response_object = dict()
     response_object['status'] = 'success'
     if request.method == 'POST':
         # post_data = request.get_json()
-        print("request.method == POST")
-        project.update_case(1, 'status', 'inprocess')
-    else:
-        response_object['project'] = project.get_project()
-        response_object['suite'] = project.get_suite()
+        project.start()
+    return jsonify(response_object)
+
+
+@app.route('/testcase/stop', methods=['POST'])
+def stop_case():
+    response_object = dict()
+    response_object['status'] = 'success'
+    if request.method == 'POST':
+        # post_data = request.get_json()
+        project.stop()
+    return jsonify(response_object)
+
+
+@app.route('/testcase/report', methods=['POST'])
+def generate_report():
+    response_object = dict()
+    response_object['status'] = 'success'
+    if request.method == 'POST':
+        # post_data = request.get_json()
+        project.get_report()
     return jsonify(response_object)
 
 

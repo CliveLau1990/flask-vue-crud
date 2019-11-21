@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -14,10 +13,13 @@
 """
 
 # Builtin libraries
+import time
 # Third-party libraries
 from xml.dom.minidom import parse
 import xml.dom.minidom
 # Customized libraries
+import GstAdasLibrary
+from xls_reporter import XlsReporter
 
 
 class ProjectTestSuite(object):
@@ -30,16 +32,42 @@ class ProjectTestSuite(object):
         likes_spam: A boolean indicating if we like SPAM or not.
         eggs: An integer count of the eggs we have laid.
     """
-
     def __init__(self, path):
         """Inits SampleClass with blah."""
         self.path = path
+        self.is_running = False
+        self.case_idx = 0
         self.project = ''
         self.suite = []
+        self.suite_dict = {
+            # MCU控制板卡
+            0: GstAdasLibrary.isReadyMcuBoardCard,
+            # CVBS采集板卡
+            1: GstAdasLibrary.isReadyCvbsBoardCard,
+            # 整机电流
+            2: GstAdasLibrary.isNormalMachineCurrent,
+            # 前视摄像头电压
+            3: GstAdasLibrary.isNormalFrontCameraVoltage,
+            # 后视摄像头电压
+            4: GstAdasLibrary.isNormalRearCameraVoltage,
+            # 左视摄像头电压
+            5: GstAdasLibrary.isNormalLeftCameraVoltage,
+            # 右视摄像头电压
+            6: GstAdasLibrary.isNormalRightCameraVoltage,
+            # 前视摄像头图像
+            7: GstAdasLibrary.isCorrectFrontCameraColor,
+            # 后视摄像头图像
+            8: GstAdasLibrary.isCorrectRearCameraColor,
+            # 左视摄像头图像
+            9: GstAdasLibrary.isCorrectLeftCameraColor,
+            # 右视摄像头图像
+            10: GstAdasLibrary.isCorrectRightCameraColor,
+        }
         self._parse()
 
     def _parse(self):
         """解析xml获取测试用例"""
+        case_cnt = 0
         # TODO(CliveLau): 合理性检查
         # 清空列表
         self.suite.clear()
@@ -52,11 +80,10 @@ class ProjectTestSuite(object):
         cases = suite.getElementsByTagName("case")
         # 打印每个测试用例的详细信息
         for case in cases:
+            case_cnt += 1
             dict_case = {}
             if case.hasAttribute("title"):
                 dict_case['title'] = case.getAttribute("title")
-            if len(case.getElementsByTagName('index')):
-                dict_case['index'] = case.getElementsByTagName('index')[0].childNodes[0].data
             if len(case.getElementsByTagName('description')):
                 dict_case['description'] = case.getElementsByTagName('description')[0].childNodes[0].data
             if len(case.getElementsByTagName('min')):
@@ -70,9 +97,53 @@ class ProjectTestSuite(object):
                 for cmd in case.getElementsByTagName('data'):
                     li_cmd.append(cmd.childNodes[0].data)
                 dict_case['data'] = li_cmd
+            dict_case['index'] = case_cnt
+            dict_case['value'] = ""
             # status: init / inprocess / pass / fail
             dict_case['status'] = "init"
             self.suite.append(dict_case)
+
+    def start(self):
+        """设置测试用例状态"""
+        if self.is_running:
+            return
+        self.is_running = True
+        self.case_idx = 0
+        for idx in range(0, len(self.suite)):
+            case = self.suite[idx]
+            case['value'] = ''
+            case['status'] = 'init'
+
+        print('>>>>>>>>>>>>>>>>>>Start>>>>>>>>>>>>>>>>>>>>')
+
+        for idx in range(0, len(self.suite)):
+            if not self.is_running:
+                break
+            self.case_idx = idx
+            case = self.suite[idx]
+            case['status'] = 'inprocess'
+            print('<start>: case_idx:', self.case_idx)
+            if self.suite_dict.get(idx) is None:
+                case['status'] = 'fail'
+                continue
+            if self.suite_dict.get(idx)(case):
+                case['status'] = 'pass'
+            else:
+                case['status'] = 'fail'
+                break
+            
+
+    def stop(self):
+        """设置测试用例状态"""
+        if not self.is_running:
+            return
+        self.is_running = False
+        self.case_idx = 0
+        # 处于InProcess状态，更改状态为Init状态
+        for idx in range(0, len(self.suite)):
+            case = self.suite[idx]
+            if case['status'] == 'inprocess':
+                case['status'] = 'init'
 
     def get_project(self):
         """获取项目名称"""
@@ -82,9 +153,13 @@ class ProjectTestSuite(object):
         """获取全部测试用例"""
         return self.suite
 
-    def update_case(self, index, attr, value):
-        """更新测试用例"""
-        self.suite[index - 1][attr] = value
+    def get_case_idx(self):
+        """获取当前测试用例的序号"""
+        return self.case_idx
+
+    def get_report(self):
+        """生成测试报告"""
+        XlsReporter().generate_report("CliveLau20191121", self.suite)
 
 
 def main():
