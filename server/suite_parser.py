@@ -44,24 +44,30 @@ class ProjectTestSuite(object):
             0: GstAdasLibrary.isReadyMcuBoardCard,
             # CVBS采集板卡
             1: GstAdasLibrary.isReadyCvbsBoardCard,
-            # 整机电流
+            # 16V整机电流
             2: GstAdasLibrary.isNormalMachineCurrent,
+            # 12V整机电流
+            3: GstAdasLibrary.isNormalMachineCurrent,
+            # 9V整机电流
+            4: GstAdasLibrary.isNormalMachineCurrent,
             # 前视摄像头电压
-            3: GstAdasLibrary.isNormalFrontCameraVoltage,
+            5: GstAdasLibrary.isNormalFrontCameraVoltage,
             # 后视摄像头电压
-            4: GstAdasLibrary.isNormalRearCameraVoltage,
+            6: GstAdasLibrary.isNormalRearCameraVoltage,
             # 左视摄像头电压
-            5: GstAdasLibrary.isNormalLeftCameraVoltage,
+            7: GstAdasLibrary.isNormalLeftCameraVoltage,
             # 右视摄像头电压
-            6: GstAdasLibrary.isNormalRightCameraVoltage,
+            8: GstAdasLibrary.isNormalRightCameraVoltage,
             # 前视摄像头图像
-            7: GstAdasLibrary.isCorrectFrontCameraColor,
+            9: GstAdasLibrary.isCorrectFrontCameraColor,
             # 后视摄像头图像
-            8: GstAdasLibrary.isCorrectRearCameraColor,
+            10: GstAdasLibrary.isCorrectRearCameraColor,
             # 左视摄像头图像
-            9: GstAdasLibrary.isCorrectLeftCameraColor,
+            11: GstAdasLibrary.isCorrectLeftCameraColor,
             # 右视摄像头图像
-            10: GstAdasLibrary.isCorrectRightCameraColor,
+            12: GstAdasLibrary.isCorrectRightCameraColor,
+            # 硬线开关
+            13: GstAdasLibrary.isCorrectButtonSignal,
         }
         self._parse()
 
@@ -92,11 +98,11 @@ class ProjectTestSuite(object):
                 dict_case['typical'] = case.getElementsByTagName('typical')[0].childNodes[0].data
             if len(case.getElementsByTagName('max')):
                 dict_case['max'] = case.getElementsByTagName('max')[0].childNodes[0].data
-            if len(case.getElementsByTagName('data')):
+            if len(case.getElementsByTagName('transmit')):
                 li_cmd = []
-                for cmd in case.getElementsByTagName('data'):
+                for cmd in case.getElementsByTagName('transmit'):
                     li_cmd.append(cmd.childNodes[0].data)
-                dict_case['data'] = li_cmd
+                dict_case['transmit'] = li_cmd
             dict_case['index'] = case_cnt
             dict_case['value'] = ""
             # status: init / inprocess / pass / fail
@@ -159,7 +165,7 @@ class ProjectTestSuite(object):
 
     def get_report(self):
         """生成测试报告"""
-        XlsReporter().generate_report("CliveLau20191121", self.suite)
+        XlsReporter().generate_report("CliveLau20191122", self.suite)
 
 
 def main():

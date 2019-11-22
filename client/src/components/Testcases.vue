@@ -102,6 +102,7 @@ export default {
       axios.post(path)
         .then(() => {
           this.getSuites();
+          window.console.log('Start testing');
           this.message = 'Start testing';
           this.showMessage = true;
         })
@@ -116,6 +117,7 @@ export default {
       axios.post(path)
         .then(() => {
           // this.getSuites();
+          window.console.log('Stop testing');
           this.message = 'Stop testing';
           this.showMessage = true;
         })
@@ -130,6 +132,7 @@ export default {
       axios.post(path)
         .then(() => {
           // this.getSuites();
+          window.console.log('Generating Report!');
           this.message = 'Generating Report!';
           this.showMessage = true;
         })

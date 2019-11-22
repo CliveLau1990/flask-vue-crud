@@ -215,6 +215,21 @@ def isCorrectRightCameraColor(case):
     return (case.get('typical') == case.get('value'))
 
 
+def isCorrectButtonSignal(case):
+    """ 模拟硬线开关，检测前视摄像头图像颜色是否正确
+
+    :return: color string
+    """
+    if case is None:
+        return False
+    # 模拟硬线开关
+    USB2CAN().write((int(0x00), int(0x00), int(0x00), int(0x00), int(0x00), int(0x00), int(0x00), int(0x01)))
+    sleep(0.1)
+    # 检测前视图像颜色
+    case['value'] = ColorDetector().get_label()
+    return (case.get('typical') == case.get('value'))
+
+
 if __name__ == '__main__':
     pass
     # 检测MCU控制板卡是否就绪
